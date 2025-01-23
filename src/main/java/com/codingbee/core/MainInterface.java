@@ -2,6 +2,7 @@ package com.codingbee.core;
 
 import com.codingbee.exceptions.InternalErrorException;
 
+import java.io.File;
 import java.io.IOException;
 
 public class MainInterface {
@@ -29,18 +30,21 @@ public class MainInterface {
         String inputPath = args[0];
         String outputPath = args[1];
 
-        String address1 = "0000";
-        String address2 = "3E80";
+        int address1 = Integer.parseInt("0000", 16);
+        int address2 = Integer.parseInt("3E80", 16);
 
         if (args.length == 4){
             if (args[2] == null || args[3] == null){
                 throw new IllegalArgumentException("Illegal argument: the addresses can not be null");
             }
-            address1 = args[2];
-            address2 = args[3];
+            address1 = Integer.parseInt(args[2], 16);
+            address2 = Integer.parseInt(args[3], 16);
         }
 
-        String inputCode = FileManager.loadFileAsString(inputPath);
+        File translatedFile = new File(inputPath);
+        String inputCode;
+        if (translatedFile.isDirectory()) inputCode = FileManager.loadProject(inputPath);
+        else inputCode = FileManager.loadFileAsString(inputPath);
         String assemblyCode = Compiler.process(inputCode);
 
         if (assemblyCode == null) {
