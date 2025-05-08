@@ -11,9 +11,9 @@ import java.util.List;
 public class FileManager {
     /**
      * Loads all project files with ".bpp" extension and formats them into one String
-     * @param dirPath path to project directory with all files, can be searched recursively
+     * @param dirPath path to project directory with all files can be searched recursively
      * @return content of all files with ".bpp" extension read as plain text in one String
-     * @throws IOException if the path is not valid, can not be read or does not contain ".bpp" files
+     * @throws IOException if the path is not valid, cannot be read or does not contain ".bpp" files
      */
     public static String loadProject(String dirPath) throws IOException {
         StringBuilder content = new StringBuilder();
@@ -31,7 +31,7 @@ public class FileManager {
     /**
      * Recursively searches directory and all directories inside and returns all non-directory files.
      * @param directoryPath path of the directory to search
-     * @return all files that are not a directory in the directories and recursively all the directories inside
+     * @return all files in the directory, which are not a directory and recursively their content as well
      */
     private static List<File> listFilesRecursively(String directoryPath) {
         List<File> fileList = new ArrayList<>();
@@ -56,16 +56,14 @@ public class FileManager {
 
 
     /**
-     * Loads the text file at given path as one String object
+     * Loads the text file at a given path as one String object
      * @param filePath path of the given file
      * @return the content of the file, when read as a text file, in one String object
-     * @throws IOException when file can not be found or read, or when access id denied
+     * @throws IOException when file cannot be found or read, or when access id denied
      */
     public static String loadFileAsString(String filePath) throws IOException {
         try {
-            return new String(Files.readAllBytes(Paths.get(filePath))).replace("\t", "")
-                    .replace("\r\n", "\n");/*Loads information, removes tabs and
-                    normalizes new lines*/
+            return new String(Files.readAllBytes(Paths.get(filePath)));
         } catch (IOException e) {
             throw new IOException("Could not read the file " + filePath + ": " + e.getLocalizedMessage());
         }
@@ -75,7 +73,7 @@ public class FileManager {
      * Writes assembly instructions to the specified file in binary format
      * @param asmString assembly instructions as one String
      * @param filePath path to the given file
-     * @throws IOException if the file can not be created, accessed or written to
+     * @throws IOException if the file cannot be created, accessed or written to
      */
     public static void writeAsmAsBinary(String asmString, String filePath) throws IOException {
         try (FileOutputStream outStream = new FileOutputStream(filePath)) {
